@@ -1,11 +1,20 @@
 async function loadSpotifyData () {
     const app_url = 'https://logspot.top'
     const user_id = '6bd78d5a03364c44e5f620545b56eae63b49b9e2f595efa14ac26262cf3f4737fea5730678312963'
-    const endpoint = app_url + '/getsongs/?user_id=' + user_id
+    const endpoint = app_url + '/getsongs/'
 
     console.log(endpoint)
 
-    const { data: { children } } = await fetch(endpoint).then(res => res.json())
+    const { data: { children } } = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({user_id: user_id})
+    }).then(res => res.json())
+
+    console.log (children)
 
     let results_array = []
 
