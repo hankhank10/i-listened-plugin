@@ -51,9 +51,6 @@ function main () {
         // Get the data from Spotify
         let data = await loadSpotifyData()
 
-        //let newBlock = logseq.Editor.insertBlock(targetBlockUuid, "Hello World!")
-        //let newBlock2 = logseq.Editor.insertBlock(targetBlockUuid, "Hello World Again!")
-
         // Iterate through the data and insert each item into the current block
         data.forEach(function (item, index) {
             logseq.Editor.insertBlock(targetBlockUuid, item)
