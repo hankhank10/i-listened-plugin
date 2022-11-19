@@ -26,47 +26,55 @@ async function loadSpotifyData () {
 }
 
 function main () {
-  logseq.Editor.registerSlashCommand(
-    '💿 Recently played from Spotify',
-    async () => {
-        const { content, uuid } = await logseq.Editor.getCurrentBlock()
+    logseq.Editor.registerSlashCommand(
+        '💿 Recently played from Spotify!',
+        async () => {
+            const {content, uuid} = await logseq.Editor.getCurrentBlock()
 
-        logseq.App.showMsg(`
+            logseq.App.showMsg(`
             [:div.p-2
               [:h1 "Fetching from Spotify..."]
             ]
         `)
 
-        //logseq.Editor.insertAtEditingCursor (await loadSpotifyData())
+            //logseq.Editor.insertAtEditingCursor (await loadSpotifyData())
 
-        // Get the current block
-        let targetBlock = await logseq.Editor.getCurrentBlock()
-        let targetBlockUuid = targetBlock.uuid
+            // Get the current block
+            let targetBlock = await logseq.Editor.getCurrentBlock()
+            let targetBlockUuid = targetBlock.uuid
 
-        console.log(targetBlockUuid)
+            console.log(targetBlockUuid)
 
-        // Set the current block content
-        logseq.Editor.updateBlock (targetBlockUuid, "🎺 Today on [[spotify]]:")
+            // Set the current block content
+            logseq.Editor.updateBlock(targetBlockUuid, "🎺 Today on [[spotify]]:")
 
-        // Get the data from Spotify
-        let data = await loadSpotifyData()
+            // Get the data from Spotify
+            let data = await loadSpotifyData()
 
-        // Iterate through the data and insert each item into the current block
-        data.forEach(function (item, index) {
-            logseq.Editor.insertBlock(targetBlockUuid, item)
-        });
+            // Iterate through the data and insert each item into the current block
+            data.forEach(function (item, index) {
+                logseq.Editor.insertBlock(targetBlockUuid, item)
+            });
 
-    },
-  )
+        },
+    )
 
-  logseq.Editor.registerBlockContextMenuItem('🎺 Spotify integration',
-    ({ blockId }) => {
-      logseq.App.showMsg(
-        '🎺 Spotify integration'
-      )
-  })
+    let settings = [
+        {
+            key: "CommaSeparatedOptions",
+            type: "string",
+            title: "Options for Workflow 1",
+            description: "Enter your desired workflow options, separated by commas. i.e. 'TODO, DOING, WAITING, CANCELED'",
+            default: "TODO, CANCELLED, WAITING, DONE"
+        },
+    ]
+    logseq.useSettingsSchema(settings)
 
+    logseq.Editor.registerBlockContextMenuItem('🎺 Spotify integration',
+        ({blockId}) => {logseq.App.showMsg('🎺 Spotify integration')}
+    )
 }
+
 
 // bootstrap
 logseq.ready(main).catch(console.error)
