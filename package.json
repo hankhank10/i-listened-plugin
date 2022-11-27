@@ -1,13 +1,24 @@
 {
   "name": "logseq-plugin-spotify-integration",
-  "version": "0.0.1",
   "description": "Displays the tracks you have listened to on Spotify in your log using a slash command",
-  "main": "index.html",
-  "author": "Mark",
+  "author": "hankhank10",
+  "main": "dist/index.html",
+  "targets": {
+    "main": false
+  },
+  "scripts": {
+    "build": "parcel build --no-source-maps src/index.html --public-url ./"
+  },
   "license": "MIT",
+  "dependencies": {
+    "@logseq/libs": "latest"
+  },
   "logseq": {
     "id": "_r5fbt3wdc",
     "title": "Spotify Integration",
-    "icon": "logseq-spotify-icon.png"
+    "icon": "./logseq-spotify-icon.png"
+  },
+  "devDependencies": {
+    "parcel": "latest"
   }
 }
