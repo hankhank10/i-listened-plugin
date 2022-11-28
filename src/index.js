@@ -6,24 +6,38 @@ const pluginId = PL.id;
 
 async function loadSpotifyData() {
   const appURL = 'https://logspot.top';
-  const userID = '6bd78d5a03364c44e5f620545b56eae63b49b9e2f595efa14ac26262cf3f4737fea5730678312963';
+  const userID = logseq.settings["LogSpotToken"];
   const endpoint = appURL + '/getsongs/';
-  console.log(`#${pluginId}: ` + endpoint);
 
-  const { data: { children } } = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }).then(res => res.json());
+  const object_to_send = {
+    'user_id': userID
+  }
 
-  console.log(`#${pluginId}: json ` + children);
+  console.log(object_to_send)
 
   let results_array = [];
+
+  console.log("OK GO!")
+  try {
+    const {data: {children}} = await fetch(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(object_to_send),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    }).then(res => res.json())
+
+  } catch (e) {
+    results_array.push("There was a problem fetching your data from Spotify.");
+    results_array.push("In order to use this plugin, you must first authenticate with Spotify by visiting https://logspot.top/");
+    results_array.push("Once you have authenticated, you will be given a token. Enter that token in the LogSpot plugin settings.");
+    return results_array;
+  }
+
   children.forEach(function (item, index) {
     results_array.push(item['track_name'] + " by [[" + item['artist'] + "]]");
   });
+
   return results_array;
 }
 
@@ -33,8 +47,6 @@ function main () {
 
   settingUI(); /* -setting */
   console.info(`#${pluginId}: main`); /* -plugin-id */
-
-
 
   logseq.Editor.registerSlashCommand('💿 Recently played from Spotify!', async () => {
 
