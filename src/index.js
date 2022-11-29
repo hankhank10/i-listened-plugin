@@ -13,30 +13,32 @@ async function loadSpotifyData() {
     'user_id': userID
   }
 
-  console.log(object_to_send)
+  let response = await fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(object_to_send),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  })
+
+  let data = await response.json();
+  let status = await response.status;
+
+  console.log(status);
 
   let results_array = [];
 
-  console.log("OK GO!")
-  try {
-    const {data: {children}} = await fetch(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(object_to_send),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    }).then(res => res.json())
-
-  } catch (e) {
-    results_array.push("There was a problem fetching your data from Spotify.");
-    results_array.push("In order to use this plugin, you must first authenticate with Spotify by visiting https://logspot.top/");
-    results_array.push("Once you have authenticated, you will be given a token. Enter that token in the LogSpot plugin settings.");
-    return results_array;
+  if (status === 200) {
+    let children = data.data.children;
+    children.forEach(function (item, index) {
+      results_array.push(item['track_name'] + " by [[" + item['artist'] + "]]");
+      console.log(item['track_name'] + " by [[" + item['artist'] + "]]");
+    });
+  } else {
+    results_array.push("There was an error fetching your data from logspot. Error code was " + status);
+    results_array.push(data.message)
+    console.log(data);
   }
-
-  children.forEach(function (item, index) {
-    results_array.push(item['track_name'] + " by [[" + item['artist'] + "]]");
-  });
 
   return results_array;
 }
