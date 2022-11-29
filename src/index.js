@@ -29,18 +29,14 @@ async function loadSpotifyData() {
   console.log(pluginName, "fetching data from ", endpoint)
   console.log(pluginName, "sending data pacakge", object_to_send)
 
-  try {
-    let response = await fetch(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(object_to_send),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    })
-  } catch {
-    results_array.push ("Could not reach logspot server. Check that you are connected to the internet.")
-    return results_array
-  }
+
+  let response = await fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify(object_to_send),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  })
 
   let data = await response.json();
   let status = await response.status;
@@ -51,10 +47,10 @@ async function loadSpotifyData() {
     let children = data.data.children;
     children.forEach(function (item, index) {
       results_array.push(item['track_name'] + " by [[" + item['artist'] + "]]");
-      console.log(item['track_name'] + " by [[" + item['artist'] + "]]");
+      //console.log(item['track_name'] + " by [[" + item['artist'] + "]]");
     });
   } else {
-    results_array.push("There was an error fetching your data from logspot. Error code was " + status);
+    results_array.push("There was an error fetching your data from logspot. Error code was " + status +".");
     results_array.push(data.message)
     console.log(data);
   }
