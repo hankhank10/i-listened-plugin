@@ -46,7 +46,13 @@ async function loadSpotifyData() {
   if (status === 200) {
     let children = data.data.children;
     children.forEach(function (item, index) {
-      results_array.push(item['track_name'] + " by [[" + item['artist'] + "]]");
+      const link_artist = logseq.settings["LogSpotLinkArtist"];
+
+      if (link_artist) {
+        results_array.push(item['track_name'] + " by [[" + item['artist'] + "]]");
+      } else {
+        results_array.push(item['track_name'] + " by " + item['artist']);
+      }
       //console.log(item['track_name'] + " by [[" + item['artist'] + "]]");
     });
   } else {
@@ -67,6 +73,11 @@ function main () {
 
   logseq.Editor.registerSlashCommand('💿 Recently played from Spotify!', async () => {
 
+    let SpotifyHeading = logseq.settings["LogSpotHeading"]
+    if (SpotifyHeading === "") {
+      SpotifyHeading = "🎺 Today on [[spotify]]:"
+    }
+
     const { content, uuid } = await logseq.Editor.getCurrentBlock();
 
     // Display the toast
@@ -84,7 +95,7 @@ function main () {
     console.log(`#${pluginId}: ` + targetBlockUuid);
 
     // Set the current block content
-    logseq.Editor.updateBlock(targetBlockUuid, "🎺 Today on [[spotify]]:");
+    logseq.Editor.updateBlock(targetBlockUuid, SpotifyHeading);
 
     // Get the data from Spotify
     let data = await loadSpotifyData();
