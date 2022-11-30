@@ -17,7 +17,7 @@
   "logseq": {
     "id": "logspot-spotify",
     "title": "Spotify Integration",
-    "icon": "./logseq-spotify-icon.png"
+    "icon": "./icon.png"
   },
   "devDependencies": {
     "parcel": "latest"
