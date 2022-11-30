@@ -1,5 +1,6 @@
 {
-  "name": "logseq-plugin-spotify-integration",
+  "name": "logseq-spotify-integration",
+  "version": "0.0.1",
   "description": "Displays the tracks you have listened to on Spotify in your log using a slash command",
   "author": "hankhank10",
   "main": "dist/index.html",
@@ -14,7 +15,7 @@
     "@logseq/libs": "latest"
   },
   "logseq": {
-    "id": "_r5fbt3wdc",
+    "id": "logspot-spotify",
     "title": "Spotify Integration",
     "icon": "./logseq-spotify-icon.png"
   },
