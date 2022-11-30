@@ -9,7 +9,7 @@ const pluginName = "Spotify plugin: "
 /* function to fetch data from logspot */
 async function loadSpotifyData() {
 
-  const appURL = 'https://logspot.top';
+  const appURL = 'https://spotify.logspot.top';
   const userID = logseq.settings["LogSpotToken"];
   const endpoint = appURL + '/getsongs/';
 
@@ -17,7 +17,7 @@ async function loadSpotifyData() {
 
   if (userID === "") {
     results_array.push("This plugin has not yet been initialised.")
-    results_array.push("In order to use this plugin, you must first authenticate with Spotify by visiting https://logspot.top/");
+    results_array.push("In order to use this plugin, you must first authenticate with Spotify by visiting " + appURL);
     results_array.push("Once you have authenticated, you will be given a token (a long string of letters and numbers). Enter that token in the LogSpot plugin settings.");
     return results_array
   }
